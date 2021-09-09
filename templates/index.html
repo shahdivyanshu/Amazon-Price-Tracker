@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static%}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add Items</h5>
+      </div>
+      <div class="modal-body">
+  <form method="POST" action="" autocomplete="off">
+ {% csrf_token %}
+ {{form|crispy}}
+<button type="submit" class="btn btn-primary my-2">Submit</button>
+</form>
+       </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+    <div class="col">
+          
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalLong"> Add
+	  </button>
+     <a href="update"> <button class="btn btn-info"> Update</button></a>
+     </div>
+
+    <div class="col" style="text-align:right">
+          <div> Total items added : {{items}}</div>
+          <div>Total discounted items available : {{total_discount}}</div>
+    </div>
+</div>
+
+   
+
+
+{% if query%}
+{% for i in query%}
+
+<div class="card mt-3 mx-2 my-3" style="width:75rem;">
+  	<div class="card-header">
+    <div class="container">{{i.name}}</div>
+    <a href="{% url 'linkdelete' i.pk %}"><button class="btn btn-danger">Delete</button></a>
+	</div>
+    <div class="card-body">
+    	<div class="blockquote">
+    		<div class="container">Current Price(₹) : {{i.current_price}}</div>
+    		<div class="container">Old Price(₹) : {{i.old_price}}</div>
+    		<div class="container">Difference in Prices : {{i.difference}}</div>
+    		<div class="container">Link : <a href="{{i.url}}">{{i.name|truncatechars:60}}</div></a>
+    		
+  </div>
+</div>
+</div>
+
+
+{% endfor %}
+{% else %}
+<h3>Can't track any items as of now </h3>
+{% endif %}
+{% endblock content %}
